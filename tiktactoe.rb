@@ -7,13 +7,14 @@ class TicTacToe
  
   # Method to display the board
   def display_board
-     puts " 0 1 2"
+    puts " 0 1 2"
      @board.each_with_index do |row, i|
        print "#{i} "
        row.each { |cell| print "#{cell}|" }
-       puts "\n -----"
+       puts "\n --|--|--|--"
      end
-  end
+   end
+ 
  
   # Method to check if the game is won
   def check_win
@@ -47,19 +48,25 @@ class TicTacToe
  
   # Method to switch the current player
   def switch_player
-     @current_player = (@current_player == 'X' ? 'O' : 'X')
+    @current_player = (@current_player == 'X' ? 'O' : 'X')
   end
  
   # Method to get a move from the user
   def get_move
-     print "Enter the row and column for your move : "
-     input = gets.chomp.downcase
-     while !valid_input?(input)
-       puts "Invalid entry! Please enter again:"
-       input = gets.chomp.downcase
-     end
-     input
+    print "Enter the row and column for your move: "
+    input = gets.chomp.downcase
+  
+    until valid_input?(input)
+      puts "Invalid entry! Please enter again:"
+      input = gets.chomp.downcase
+    end
+  
+    row, col = input.split(',').map(&:to_i)
+    make_move(row - 1, col - 1)
   end
 
- end
-
+  #Method to validate the user input
+ def valid_input?(input)
+   input =~ /^([1-3]),\s?([1-3])$/ || input == '4'
+  end
+end
