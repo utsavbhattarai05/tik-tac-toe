@@ -29,44 +29,85 @@ class TicTacToe
        [[0, 2], [1, 1], [2, 0]]
      ]
  
-     winning_combinations.each do |combination|
-       symbols = combination.map { |pos| @board[pos[0]][pos[1]] }
-       return true if symbols.uniq.length == 1 && symbols[0] != ' '
-       false
+     return winning_combinations.any? do |combination|
+      symbols = combination.map { |pos| @board[pos[0]][pos[1]] }
+      symbols.uniq.length == 1 && symbols[0] != ' '
      end
   end
  
   # Method to make a move for the current player
   def make_move(row, col)
-     if @board[row][col] == ' '
-       @board[row][col] = @current_player
-       switch_player
-     else
-       puts "Invalid move! Cell already taken. Try again."
-     end
-  end
- 
-  # Method to switch the current player
-  def switch_player
-    @current_player = (@current_player == 'X' ? 'O' : 'X')
+    if @board[row][col] ==''
+      @board[row][col] = @current_player
+      switch_player
+    else
+      puts "Invalid move! Cell already taken. Try again."
+    end
   end
  
   # Method to get a move from the user
-  def get_move
-    print "Enter the row and column for your move: "
-    input = gets.chomp.downcase
+  def game_loop
+    loop do
+      display_board
+      get_move
   
-    until valid_input?(input)
-      puts "Invalid entry! Please enter again:"
-      input = gets.chomp.downcase
+      break if check_win
+      switch_player
     end
+  end
   
-    row, col = input.split(',').map(&:to_i)
+  def get_move
+    input = nil
+    row = nil
+    col = nil
+    loop do
+      puts "#{@current_player}'s turn. Enter your move (row, col):"
+      input = gets.chomp
+  
+      if valid_input?(input)
+        row, col = input.split(',').map(&:to_i)
+        if @board[row][col] == ''
+          @board[row][col] = @current_player
+          display_board  # Display the board after a move
+          switch_player
+          break if check_win
+         
+        else
+          puts "Invalid move! Cell already taken. Try again."
+        end
+      else
+        puts "Invalid input! Please enter a valid move in the format 'row, col' (e.g., '0,2')."
+      end
+    end
+    
     make_move(row - 1, col - 1)
+  end
+  
+  
+  
+  def switch_player
+    @current_player = (@current_player == 'X' ? 'O' : 'X')
   end
 
   #Method to validate the user input
- def valid_input?(input)
-   input =~ /^([1-3]),\s?([1-3])$/ || input == '4'
+  def valid_input?(input)
+    return false if input == '3'
+  
+    digits = input.split(',').map(&:strip)
+  
+    return false unless digits.length == 2
+  
+    digit1, digit2 = digits.map(&:to_i)
+  
+    (0..2).include?(digit1) && (0..2).include?(digit2)
   end
+  
 end
+
+
+ #Create an instance of TicTacToe
+#game = TicTacToe.new
+
+# Call get_move on the instance
+#game.get_move
+#require_relative
