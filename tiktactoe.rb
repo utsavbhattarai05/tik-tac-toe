@@ -13,7 +13,7 @@ class TicTacToe
        row.each { |cell| print "#{cell}|" }
        puts "\n --|--|--|--"
      end
-   end
+  end
  
  
   # Method to check if the game is won
@@ -32,7 +32,7 @@ class TicTacToe
      return winning_combinations.any? do |combination|
       symbols = combination.map { |pos| @board[pos[0]][pos[1]] }
       symbols.uniq.length == 1 && symbols[0] != ' '
-     end
+    end
   end
  
   # Method to make a move for the current player
@@ -46,15 +46,30 @@ class TicTacToe
   end
  
   # Method to get a move from the user
-  def game_loop
-    loop do
+# Method to get a move from the user
+def game_loop
+  loop do
+    display_board
+    get_move
+
+    if check_win
       display_board
-      get_move
-  
-      break if check_win
-      switch_player
+      puts "Player #{@current_player} wins!"
+      break
+    elsif board_full?
+      display_board
+      puts "The game is a draw!"
+      break
     end
+
+    switch_player  # Move the switch_player outside the else block
   end
+end
+
+
+def board_full?
+  @board.flatten.none? { |cell| cell == '' }
+end
   
   def get_move
     input = nil
@@ -69,18 +84,25 @@ class TicTacToe
         if @board[row][col] == ''
           @board[row][col] = @current_player
           display_board  # Display the board after a move
+        
+          if check_win
+            puts "Player #{@current_player} wins!"
+            break
+          end
+        
           switch_player
-          break if check_win
-         
         else
           puts "Invalid move! Cell already taken. Try again."
         end
+        
+        
+      
       else
         puts "Invalid input! Please enter a valid move in the format 'row, col' (e.g., '0,2')."
       end
     end
     
-    make_move(row - 1, col - 1)
+    make_move(row , col )
   end
   
   
@@ -103,6 +125,7 @@ class TicTacToe
   end
   
 end
+
 
 
  #Create an instance of TicTacToe
