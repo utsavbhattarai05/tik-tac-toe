@@ -31,7 +31,7 @@ class TicTacToe
  
      return winning_combinations.any? do |combination|
       symbols = combination.map { |pos| @board[pos[0]][pos[1]] }
-      symbols.uniq.length == 1 && symbols[0] != ' '
+      symbols.uniq.length == 1 && symbols[0] != ''
     end
   end
  
@@ -132,5 +132,10 @@ end
 #game = TicTacToe.new
 
 # Call get_move on the instance
-#game.get_move
+#game.game_loop
+
+
+#to run the code
 #require_relative
+#game = TicTacToe.new
+#game.game_loop
