@@ -22,13 +22,14 @@ class TicTacToe
     puts "Enter the board size (e.g., 3 for a 3x3 board):"
     @board_size = gets.chomp.to_i
     @board = Array.new(@board_size) { Array.new(@board_size, '') }
-    @current_player = 'X'
+    puts"enter the who wnat to play first 'X' or 'O' "
+    @current_player = gets.chomp.upcase
   end
 
 
   # Method to display the board
   def display_board
-    puts " 0 1 2"
+    puts " 0.. #{@board_size -1}"
      @board.each_with_index do |row, i|
        print "#{i} "
        row.each { |cell| print "#{cell}|" }
@@ -128,7 +129,7 @@ end
   #Method to validate the user input
   def valid_input?(input)
     @a = @board_size-1
-    return false if input == @board_size
+    return false if input == "#{@board_size}"
   
     digits = input.split(',').map(&:strip)
   
@@ -147,17 +148,21 @@ def continue
     puts("Thank you for playing again")
     initialize  # Reset the game state
     game_loop
-  else
+  elsif choice == "N"
     puts("Thank you for playing.")
+
+    else
+      puts("Press (Y) for yes and (N) for no")
   end
 end
 
 
  #Create an instance of TicTacToe
-#game = TicTacToe.new
+game = TicTacToe.new
 
 # Call get_move on the instance
-#game.game_loop
+
+game.game_loop
 
 
 #to run the code
