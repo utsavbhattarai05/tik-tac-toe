@@ -1,13 +1,35 @@
 class TicTacToe
+  private
+
+  def rows
+    (0...@board_size).map { |row| (0...@board_size).map { |col| [row, col] } }
+  end
+
+  def columns
+    (0...@board_size).map { |col| (0...@board_size).map { |row| [row, col] } }
+  end
+
+  def diagonals
+    [
+      (0...@board_size).map { |i| [i, i] },                  # Main diagonal
+      (0...@board_size).map { |i| [i, @board_size - 1 - i] } # Anti-diagonal
+    ]
+  end
+  
+  public
 
   def initialize
-     @board = Array.new(3) { Array.new(3, '') }
-     @current_player = 'X'
+    puts "Enter the board size (e.g., 3 for a 3x3 board):"
+    @board_size = gets.chomp.to_i
+    @board = Array.new(@board_size) { Array.new(@board_size, '') }
+    puts"enter the who wnat to play first 'X' or 'O' "
+    @current_player = gets.chomp.upcase
   end
- 
+
+
   # Method to display the board
   def display_board
-    puts " 0 1 2"
+    puts " 0.. #{@board_size -1}"
      @board.each_with_index do |row, i|
        print "#{i} "
        row.each { |cell| print "#{cell}|" }
@@ -18,16 +40,7 @@ class TicTacToe
  
   # Method to check if the game is won
   def check_win
-     winning_combinations = [
-       [[0, 0], [0, 1], [0, 2]],
-       [[1, 0], [1, 1], [1, 2]],
-       [[2, 0], [2, 1], [2, 2]],
-       [[0, 0], [1, 0], [2, 0]],
-       [[0, 1], [1, 1], [2, 1]],
-       [[0, 2], [1, 2], [2, 2]],
-       [[0, 0], [1, 1], [2, 2]],
-       [[0, 2], [1, 1], [2, 0]]
-     ]
+     winning_combinations = rows + columns + diagonals
  
      return winning_combinations.any? do |combination|
       symbols = combination.map { |pos| @board[pos[0]][pos[1]] }
@@ -103,6 +116,8 @@ end
     end
     
     make_move(row , col )
+
+    continue
   end
   
   
@@ -113,7 +128,8 @@ end
 
   #Method to validate the user input
   def valid_input?(input)
-    return false if input == '3'
+    @a = @board_size-1
+    return false if input == "#{@board_size}"
   
     digits = input.split(',').map(&:strip)
   
@@ -121,18 +137,32 @@ end
   
     digit1, digit2 = digits.map(&:to_i)
   
-    (0..2).include?(digit1) && (0..2).include?(digit2)
+    (0..@a).include?(digit1) && (0..@a).include?(digit2)
   end
-  
+end
+def continue
+  puts("Do you want to play again? Press (Y) for yes and (N) for no")
+  choice = gets.chomp.upcase
+
+  if choice == "Y"
+    puts("Thank you for playing again")
+    initialize  # Reset the game state
+    game_loop
+  elsif choice == "N"
+    puts("Thank you for playing.")
+
+    else
+      puts("Press (Y) for yes and (N) for no")
+  end
 end
 
 
-
  #Create an instance of TicTacToe
-#game = TicTacToe.new
+game = TicTacToe.new
 
 # Call get_move on the instance
-#game.game_loop
+
+game.game_loop
 
 
 #to run the code
