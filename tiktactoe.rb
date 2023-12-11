@@ -1,4 +1,5 @@
 class TicTacToe
+  #private method section
   private
 
   def rows
@@ -15,7 +16,7 @@ class TicTacToe
       (0...@board_size).map { |i| [i, @board_size - 1 - i] } # Anti-diagonal
     ]
   end
-  
+  #public method section
   public
 
   def initialize
