@@ -85,41 +85,52 @@ def board_full?
   @board.flatten.none? { |cell| cell == '' }
 end
   
-  def get_move
-    input = nil
-    row = nil
-    col = nil
-    loop do
-      puts "#{@current_player}'s turn. Enter your move (row, col):"
-      input = gets.chomp
-  
-      if valid_input?(input)
-        row, col = input.split(',').map(&:to_i)
-        if @board[row][col] == ''
-          @board[row][col] = @current_player
-          display_board  # Display the board after a move
-        
-          if check_win
+def get_move
+  loop do
+    #display_board
+
+    input = get_user_input
+
+    if valid_input?(input)
+      row, col = parse_input(input)
+
+      if valid_move?(row, col)
+        make_and_display_move(row, col)
+        if check_win
             puts "Player #{@current_player} wins!"
-            break
-          end
-        
-          switch_player
-        else
-          puts "Invalid move! Cell already taken. Try again."
+          break
         end
         
-        
-      
+        switch_player
       else
-        puts "Invalid input! Please enter a valid move in the format 'row, col' (e.g., '0,2')."
+        puts "Invalid move! Cell already taken. Try again."
       end
+    else
+      puts "Invalid input! Please enter a valid move in the format 'row, col' (e.g., '0,2')."
     end
-    
-    make_move(row , col )
-
-    continue
   end
+
+  continue
+end
+
+def get_user_input
+  puts "#{@current_player}'s turn. Enter your move (row, col):"
+  gets.chomp
+end
+
+def parse_input(input)
+  input.split(',').map(&:to_i)
+end
+
+def valid_move?(row, col)
+  @board[row][col].empty?
+end
+
+def make_and_display_move(row, col)
+  @board[row][col] = @current_player
+  display_board
+end
+
   
   
   
