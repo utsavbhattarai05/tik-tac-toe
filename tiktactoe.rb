@@ -87,8 +87,6 @@ end
   
 def get_move
   loop do
-    #display_board
-
     input = get_user_input
 
     if valid_input?(input)
@@ -96,23 +94,26 @@ def get_move
 
       if valid_move?(row, col)
         make_and_display_move(row, col)
-        if check_win
-            puts "Player #{@current_player} wins!"
-          break
-        end
-        
+        verify_win  
+        puts"Player #{@current_player} wins!"
+        return
         switch_player
-      else
+       else
         puts "Invalid move! Cell already taken. Try again."
       end
-    else
+      else
       puts "Invalid input! Please enter a valid move in the format 'row, col' (e.g., '0,2')."
     end
   end
 
   continue
 end
-
+ def verify_win
+  if check_win  
+   puts "Player #{@current_player} wins!"
+   return 
+  end 
+end
 def get_user_input
   puts "#{@current_player}'s turn. Enter your move (row, col):"
   gets.chomp
@@ -162,6 +163,8 @@ def continue
     game_loop
   elsif choice == "N"
     puts("Thank you for playing.")
+    exit
+  
 
     else
       puts("Press (Y) for yes and (N) for no")
@@ -181,3 +184,5 @@ game.game_loop
 #require_relative
 #game = TicTacToe.new
 #game.game_loop
+#exit
+#return
