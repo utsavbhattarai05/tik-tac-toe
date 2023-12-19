@@ -20,12 +20,13 @@ class TicTacToe
   public
 
   def initialize
-    puts "Enter the board size (e.g., 3 for a 3x3 board):"
-    @board_size = gets.chomp.to_i
-    @board = Array.new(@board_size) { Array.new(@board_size, '') }
-    puts"enter the who wnat to play first 'X' or 'O' "
-    @current_player = gets.chomp.upcase
-  end
+  puts "Enter the board size (e.g., 3 for a 3x3 board):"
+  @board_size = gets.chomp.to_i
+  @board = Array.new(@board_size) { Array.new(@board_size, '') }
+  puts "Enter who wants to play first 'X' or 'O':"
+  @current_player = gets.chomp.upcase
+end
+
 
 
   # Method to display the board
@@ -34,7 +35,7 @@ class TicTacToe
      @board.each_with_index do |row, i|
        print "#{i} "
        row.each { |cell| print "#{cell}|" }
-       puts "\n --|--|--|--"
+       puts "\n --|-|-|--"
      end
   end
  
@@ -69,14 +70,14 @@ def game_loop
     if check_win
       display_board
       puts "Player #{@current_player} wins!"
-      break
+      return  # Use return instead of break
     elsif board_full?
       display_board
       puts "The game is a draw!"
-      break
+      return  # Use return instead of break
     end
 
-    switch_player  # Move the switch_player outside the else block
+    switch_player
   end
 end
 
@@ -91,23 +92,28 @@ def get_move
 
     if valid_input?(input)
       row, col = parse_input(input)
-
-      if valid_move?(row, col)
-        make_and_display_move(row, col)
-        verify_win  
-        puts"Player #{@current_player} wins!"
-        return
-        switch_player
-       else
-        puts "Invalid move! Cell already taken. Try again."
-      end
-      else
+      valid_move_check(row, col) 
+      return
+      continue # Pass row and col as arguments
+    else
       puts "Invalid input! Please enter a valid move in the format 'row, col' (e.g., '0,2')."
     end
   end
-
-  continue
 end
+
+def valid_move_check(row, col)
+  if valid_move?(row, col)
+    make_and_display_move(row, col)
+    verify_win
+    return
+    switch_player
+  else
+    puts "Invalid move! Cell already taken. Try again."
+  end
+end
+
+
+
  def verify_win
   if check_win  
    puts "Player #{@current_player} wins!"
@@ -162,9 +168,7 @@ def continue
     initialize  # Reset the game state
     game_loop
   elsif choice == "N"
-    puts("Thank you for playing.")
-    exit
-  
+    puts("Thank you for playing.")  
 
     else
       puts("Press (Y) for yes and (N) for no")
