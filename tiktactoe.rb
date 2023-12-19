@@ -25,6 +25,13 @@ class TicTacToe
   @board = Array.new(@board_size) { Array.new(@board_size, '') }
   puts "Enter who wants to play first 'X' or 'O':"
   @current_player = gets.chomp.upcase
+  if ['X', 'O'].include?(@current_player)
+    @other_player = (@current_player == 'X') ? 'O' : 'X'
+    else
+      puts "Invalid input! Please enter either 'X' or 'O'"
+      return initialize
+  end
+
 end
 
 
@@ -70,15 +77,16 @@ def game_loop
     if check_win
       display_board
       puts "Player #{@current_player} wins!"
+      continue
       return  # Use return instead of break
-    elsif board_full?
+     elsif board_full?
       display_board
       puts "The game is a draw!"
       return  # Use return instead of break
     end
-
     switch_player
   end
+  continue
 end
 
 
@@ -188,5 +196,3 @@ game.game_loop
 #require_relative
 #game = TicTacToe.new
 #game.game_loop
-#exit
-#return
