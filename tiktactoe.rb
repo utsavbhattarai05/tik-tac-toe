@@ -20,9 +20,6 @@ class TicTacToe
   public
 
   def initialize
-  puts "Enter the board size (e.g., 3 for a 3x3 board):"
-  @board_size = gets.chomp.to_i
-  @board = Array.new(@board_size) { Array.new(@board_size, '') }
   puts "Enter who wants to play first 'X' or 'O':"
   @current_player = gets.chomp.upcase
   if ['X', 'O'].include?(@current_player)
@@ -31,6 +28,9 @@ class TicTacToe
       puts "Invalid input! Please enter either 'X' or 'O'"
       return initialize
   end
+  puts "Enter the board size (e.g., 3 for a 3x3 board):"
+  @board_size = gets.chomp.to_i
+  @board = Array.new(@board_size) { Array.new(@board_size, '') }
 
 end
 
